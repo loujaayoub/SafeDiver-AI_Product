@@ -1,0 +1,268 @@
+{% extends "layout.html" %} {% block content %}
+<!-- Third Container (Submit damage assessment)  -->
+<div class="container-fluid bg-2 text-center" id="third">
+    {% if scroll %}
+    <script>
+        document.location.hash = '#' + '{{ scroll }}';
+    </script>
+    {% endif %}
+    <h3>Damage Assessment Complete</h3>
+    <br>
+    <p><img src="{{ url_for('send_file', filename=filename) }}" class="img-thumbnail" id="picture"></p>
+    <h4>Results:</h4>
+    <table>
+        <tr>
+            <td>Car validation check</td>
+            {% if result['gate1_result'] %}
+            <td><span class="glyphicon glyphicon-ok"></span></td>
+        </tr>
+        <tr>
+            <td>Damage validation check</td>
+            {% if result['gate2_result'] %}
+            <td><span class="glyphicon glyphicon-ok"></span></td>
+        </tr>
+        <tr>
+            <td>Location</td>
+            <td>{{ result['location'] }}</td>
+        </tr>
+        <tr>
+            <td>Severity</td>
+            <td>{{ result['severity'] }}</td>
+        </tr>
+    </table>
+    {% else %}
+    <td><span class="glyphicon glyphicon-remove"></span></td>
+    </tr>
+    <!--</table>-->
+    <br>
+    <p>{{ result['gate2_message'][0] }}</p>
+    <p>{{ result['gate2_message'][1] }}</p>
+    {% endif %} {% else %}
+    <td><span class="glyphicon glyphicon-remove"></span></td>
+    </tr>
+    </table>
+    <br>
+    <p>{{ result['gate1_message'][0] }}</p>
+    <p>{{ result['gate1_message'][1] }}</p>
+    {% endif %}
+    <br>
+   <!-- <p>{{ result['final'] }}</p> -->
+
+
+    <!-- Begin the hidden content -->
+    <button class="btn btn-default dropdown-toggle" onclick="myFunction()">Hide details</button>
+
+
+    <div id="myDIV">
+
+        <!-- Results of Rapport.html -->
+        {% if result['Dic'] %}
+
+        <div class="table-pieces">
+            {% if result['Dic1']| length !=0 %}
+            <table style="border: 0px">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center">Damaged parts</th>
+                        <th scope="col" style="text-align: center">Operation</th>
+                        <!--     <th scope="col" style="text-align: center">Prix</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for p, op in result['Dic'].items() %}
+                    <tr>
+
+                        <td class="price">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(p) %}
+                            </div>
+                        </td>
+
+                        <td class="price">
+                           <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(op) %}
+                            </div>
+                        </td>
+                        <!--        <td class="price">
+                            {% for d in result['Dic1'] %}
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+
+                                {% print(d[p]) %}
+                            </div>
+                            {% endfor%}
+
+
+                        </td>  -->
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+                <!--<tfoot>
+                    <tr>
+                        <th class="lib-total" colspan="2" style="text-align: center">Total</th>
+
+                        <th class="fld-num" style="text-align: center">{% print(Prix) %} DH</th>
+                    </tr>
+                </tfoot>-->
+
+            </table>
+
+            <p id="grandtotal"></p>
+
+            {% endif %}
+        </div>
+
+        <div class="table-pieces">
+            {% if result["Dic"]| length !=0 %}
+            <table style="border: 0px">
+                <tbody>
+
+                    <tr>
+                        <td scope="col" style="text-align: center">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Sheet metal labor 1
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['Main d\'œuvre tolerie 1']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Sheet metal labor 2
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['Main d\'œuvre tolerie 2']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Painting labor
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['Main d\'œuvre peinture']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Total labor cost
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['TMain']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Painting products
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['Produit de pienture']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Total supply cost
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['Total de Fourniture']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Price of repair or exchange
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['prix']) %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col" style="text-align: center">
+
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                Total cost
+                            </div>
+                        </td>
+                        <td class="p-0">
+                            <div class="d-flex flex-row justify-content-center align-items-stretch flex-wrap">
+                                {% print(result['Total']) %} DH
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+
+
+        {% else %}
+
+        <p> The damaged part hasn't been detected for this car </p>
+
+        {% endif %} 
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="menu1">Next Steps
+        <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="line-height: 20px;vertical-align:middle;">
+                <li><a href="#third">Go to damage assessment </a></li>
+                <li><a href="{{ url_for('assess') }}">Request another damage assessment</a></li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.visibility == 'hidden') {
+                x.style.visibility = 'visible'
+            } else {
+                x.style.visibility = 'hidden'
+            }
+
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+*.hdf5
+*.h5
+*.jpg
+*.jpeg
+*.JPEG
+
+*.pyc
+Demo
